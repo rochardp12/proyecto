@@ -17,24 +17,25 @@ import java.util.Scanner;
  *
  * @author Usuario
  */
-public class Dueno {
+public class Premio {
     private int id;
-    private String nombres;
-    private String apellidos;
-    private String direccion;
-    private String telefono;
-    private String email;
-    private ArrayList<Mascota> mascotas;
+    private int lugar;
+    private String descripcion;
+    private int idConcurso;
+    private Concurso concurso;
     //constructor
     
-    public Dueno(String nombres, String apellidos, String direccion, String telefono, String email){
-        this.id = Util.nextID("dueños.txt");
-        this.nombres = nombres;
-        this.apellidos = apellidos;
-        this.direccion = direccion;
-        this.telefono = telefono;
-        this.email = email;
-        this.mascotas = new ArrayList<>();
+    public Premio(int lugar, String descripcion, String nombreConcurso){
+        this.id = Util.nextID("premios.txt");
+        this.lugar = lugar;
+        this.descripcion = descripcion;
+        ArrayList<Concurso> concursos = Concurso.readFromFile("premios.txt");
+        for(Concurso conc: concursos){
+            if(Objects.equals(conc.getNombre(), nombreConcurso)){
+                this.idConcurso = conc.getId();
+                this.concurso = conc;
+            }
+        }
     }
     //setters
 
@@ -42,69 +43,53 @@ public class Dueno {
         this.id = id;
     }
 
-    public void setNombres(String nombres) {
-        this.nombres = nombres;
+    public void setLugar(int lugar) {
+        this.lugar = lugar;
     }
 
-    public void setApellidos(String apellidos) {
-        this.apellidos = apellidos;
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 
-    public void setDireccion(String direccion) {
-        this.direccion = direccion;
+    public void setIdConcurso(int idConcurso) {
+        this.idConcurso = idConcurso;
     }
 
-    public void setTelefono(String telefono) {
-        this.telefono = telefono;
+    public void setConcurso(Concurso concurso) {
+        this.concurso = concurso;
     }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setMascotas(ArrayList<Mascota> mascotas) {
-        this.mascotas = mascotas;
-    }
+    
     //getters
 
     public int getId() {
         return id;
     }
 
-    public String getNombres() {
-        return nombres;
+    public int getLugar() {
+        return lugar;
     }
 
-    public String getApellidos() {
-        return apellidos;
+    public String getDescripcion() {
+        return descripcion;
     }
 
-    public String getDireccion() {
-        return direccion;
+    public int getIdConcurso() {
+        return idConcurso;
     }
 
-    public String getTelefono() {
-        return telefono;
+    public Concurso getConcurso() {
+        return concurso;
     }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public ArrayList<Mascota> getMascotas() {
-        return mascotas;
-    }
-    //comportamientos ñ
+    
+    //comportamientos
     
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("ID Dueño: ").append(this.id).append(" --> ");
-        sb.append("Nombres: ").append(this.nombres);
-        sb.append(". Apellidos: ").append(this.apellidos);
-        sb.append(". Direccion: ").append(this.direccion);
-        sb.append(". Telefono: ").append(this.telefono);
-        sb.append(". Email: ").append(this.email);
+        sb.append("ID Premio: ").append(this.id).append(" --> ");
+        sb.append("Lugar: ").append(this.lugar);
+        sb.append(". Descripcion: ").append(this.descripcion);
+        sb.append("--> ID Concurso: ").append(this.idConcurso);
         return sb.toString();
     }
     
@@ -116,13 +101,13 @@ public class Dueno {
             return true;
         if(this.getClass()!=obj.getClass())
             return false;
-        Dueno dueno = (Dueno)obj;
-        return Objects.equals(this.email,dueno.email);
+        Premio premio = (Premio)obj;
+        return Objects.equals(this.descripcion,premio.descripcion);
     }
     
     public void saveFile(String nomfile){
         try(PrintWriter pw = new PrintWriter(new FileOutputStream(new File(nomfile), true))){
-            pw.println(this.id + "|" + this.nombres + "|" + this.apellidos + "|" + this.direccion + "|" + this.telefono + "|" + this.email);
+            pw.println(this.id + "|" + this.lugar + "|" + this.descripcion + "|" + this.idConcurso);
         }
         catch(Exception e){
             System.out.println(e.getMessage());
@@ -145,13 +130,13 @@ public class Dueno {
         return dueno;
     }
     
-    public static ArrayList<Dueno> readFromFile(String nomfile){
-        ArrayList<Dueno> duenos = new ArrayList<>();
+    public static ArrayList<Premio> readFromFile(String nomfile){
+        ArrayList<Premio> premios = new ArrayList<>();
         try(Scanner sc = new Scanner(new File(nomfile))){
             while(sc.hasNextLine()){
                 String linea = sc.nextLine();
                 String[] arreglo = linea.split("\\|");
-                Dueno dueno = new Dueno(arreglo[1], arreglo[2], arreglo[3], arreglo[4], arreglo[5]);
+                Premio premio = new Premio(arreglo[1], arreglo[2], arreglo[3], arreglo[4], arreglo[5]);
                 duenos.add(dueno);
             }
         }

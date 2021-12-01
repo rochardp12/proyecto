@@ -140,7 +140,7 @@ public class Mascota {
 //    
     public void saveFile(String nomfile){
         try(PrintWriter pw = new PrintWriter(new FileOutputStream(new File(nomfile), true))){
-            pw.println(this.id + "|" + this.nombre + "|" + this.raza + "|" + this.fechaNacimiento + "|" + this.tipo + "|" + this.inscripciones + this.idDueno);
+            pw.println(this.id + "|" + this.nombre + "|" + this.raza + "|" + this.fechaNacimiento + "|" + this.tipo + "|" + this.idDueno);
         }
         catch(Exception e){
             System.out.println(e.getMessage());
@@ -191,7 +191,7 @@ public class Mascota {
                     if(dueno.getId() == Integer.parseInt(arreglo[6]))
                         email = dueno.getEmail();
                 }
-                Mascota masc = new Mascota(arreglo[1], arreglo[2], nacimiento, arreglo[4], email);
+                Mascota masc = new Mascota(arreglo[1], arreglo[2], nacimiento, arreglo[4], email); //como usar variable email
                 mascotas.add(masc);
             }
         }
