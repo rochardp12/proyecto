@@ -13,7 +13,7 @@ import java.util.Scanner;
  * @author eduardo
  */
 public class Util {
-    
+
     // el constructor se lo ha declarado privado
     // ya que esta clase solo va a contener comportamientos estáticos
     // por lo tanto, no se van a permitir crear instancia de la clase Util
