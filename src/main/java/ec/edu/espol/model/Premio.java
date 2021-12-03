@@ -114,10 +114,9 @@ public class Premio {
         }
     }
     
-    public static Premio nextPremio(int lugar, String descripcion, String nombreConcurso){ //no usaremos el scanner porque las descripciones se pedian primero y el nombre del concurso se pedia una sola vez al final, por lo tanto no era posible pedir informacion por scanner en este metodo
+    public static void nextPremio(int lugar, String descripcion, String nombreConcurso){ //no usaremos el scanner porque las descripciones se pedian primero y el nombre del concurso se pedia una sola vez al final, por lo tanto no era posible pedir informacion por scanner en este metodo
         Premio premio = new Premio(lugar, descripcion, nombreConcurso);
         premio.saveFile("premios.txt");
-        return premio;
     }
     
     public static ArrayList<Premio> readFromFile(String nomfile){

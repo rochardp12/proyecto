@@ -149,7 +149,7 @@ public class Mascota {
         }
     }
     
-    public static Mascota nextMascota(Scanner sc){
+    public static void nextMascota(Scanner sc){
         System.out.println("-> Ingrese nombre:");
         String nombre = sc.next();
         System.out.println("-> Ingrese raza:");
@@ -179,7 +179,6 @@ public class Mascota {
         String email = sc.next();
         Mascota masc = new Mascota(nombre, raza, nacimiento, tipo, email);
         masc.saveFile("mascotas.txt");
-        return masc;
     }
     
     public static ArrayList<Mascota> readFromFile(String nomfile){

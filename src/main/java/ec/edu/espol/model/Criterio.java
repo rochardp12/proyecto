@@ -111,13 +111,12 @@ public class Criterio {
         }
     }
     
-    public static Criterio nextCriterio(String descripcion, String nombreConcurso){ //no usaremos el scanner porque las descripciones se pedian primero y el nombre del concurso se pedia una sola vez al final, por lo tanto no era posible pedir informacion por scanner en este metodo
+    public static void nextCriterio(String descripcion, String nombreConcurso){
         Criterio criterio = new Criterio(descripcion, nombreConcurso);
         criterio.saveFile("premios.txt");
-        return criterio;
     }
     
-    public static ArrayList<Dueno> readFromFile(String nomfile){
+    public static ArrayList<Criterio> readFromFile(String nomfile){
         ArrayList<Criterio> criterios = new ArrayList<>();
         try(Scanner sc = new Scanner(new File(nomfile))){
             while(sc.hasNextLine()){
@@ -130,7 +129,6 @@ public class Criterio {
         catch(Exception e){
             System.out.println(e.getMessage());
         }
-        return duenos;
+        return criterios;
         }
     }
-}

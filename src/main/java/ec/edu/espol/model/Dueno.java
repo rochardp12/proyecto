@@ -129,7 +129,7 @@ public class Dueno {
         }
     }
     
-    public static Dueno nextDueno(Scanner sc){
+    public static void nextDueno(Scanner sc){
         System.out.println("-> Ingrese nombres:");
         String nombres = sc.next();
         System.out.println("-> Ingrese apellidos:");
@@ -142,7 +142,6 @@ public class Dueno {
         String email = sc.next();
         Dueno dueno = new Dueno(nombres, apellidos, direccion, telefono, email);
         dueno.saveFile("dueños.txt");
-        return dueno;
     }
     
     public static ArrayList<Dueno> readFromFile(String nomfile){
