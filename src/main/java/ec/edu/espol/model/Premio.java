@@ -114,35 +114,31 @@ public class Premio {
         }
     }
     
-    public static Dueno nextDueno(Scanner sc){
-        System.out.println("-> Ingrese nombres:");
-        String nombres = sc.next();
-        System.out.println("-> Ingrese apellidos:");
-        String apellidos = sc.next();
-        System.out.println("-> Ingrese direccion de vivienda:");
-        String direccion = sc.next();
-        System.out.println("-> Ingrese telefono de contacto:");
-        String telefono = sc.next();
-        System.out.println("-> Ingrese e-mail:");
-        String email = sc.next();
-        Dueno dueno = new Dueno(nombres, apellidos, direccion, telefono, email);
-        dueno.saveFile("dueños.txt");
-        return dueno;
+    public static Premio nextPremio(Scanner sc, int lugar, String descripcion, String nombreConcurso){
+            Premio premio = new Premio(lugar, descripcion, nombreConcurso);
+            premio.saveFile("premios.txt");
+        return premio;
     }
     
     public static ArrayList<Premio> readFromFile(String nomfile){
         ArrayList<Premio> premios = new ArrayList<>();
+        String nombreConcurso = null;
         try(Scanner sc = new Scanner(new File(nomfile))){
             while(sc.hasNextLine()){
                 String linea = sc.nextLine();
                 String[] arreglo = linea.split("\\|");
-                Premio premio = new Premio(arreglo[1], arreglo[2], arreglo[3], arreglo[4], arreglo[5]);
-                duenos.add(dueno);
+                ArrayList<Concurso> concursos = Concurso.readFromFile("concursos.txt");
+                for(Concurso concu: concursos){
+                    if(concu.getId() == Integer.parseInt(arreglo[3]))
+                        nombreConcurso = concu.getNombre();
+                }
+                if(nombreConcurso != null)
+                    premios.add(new Premio(Integer.parseInt(arreglo[1]), arreglo[2], nombreConcurso));
             }
         }
         catch(Exception e){
             System.out.println(e.getMessage());
         }
-        return duenos;
+        return premios;
         }
 }
