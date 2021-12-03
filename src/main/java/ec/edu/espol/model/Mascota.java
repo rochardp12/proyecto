@@ -36,10 +36,10 @@ public class Mascota {
         this.fechaNacimiento = fechaNacimiento;
         this.tipo = tipo;
         ArrayList<Dueno> duenos = Dueno.readFromFile("dueños.txt");
-        for(Dueno dueno: duenos){
-            if(Objects.equals(dueno.getEmail(),emailDueno)){
-                this.idDueno = dueno.getId();
-                this.dueno = dueno;
+        for(Dueno d: duenos){
+            if(Objects.equals(d.getEmail(),emailDueno)){
+                this.idDueno = d.getId();
+                this.dueno = d;
             }
         }
         this.inscripciones = new ArrayList<>();
@@ -127,20 +127,22 @@ public class Mascota {
     }
     
     @Override
-//    public boolean equals(Object obj) {
-//        if(obj==null)
-//            return false;
-//        if(this==obj)
-//            return true;
-//        if(this.getClass()!=obj.getClass())
-//            return false;
-//        Mascota masc = (Mascota)obj;
-//        return Objects.equals(this.dueno.getEmail(),masc.dueno.getEmail());
-//    }
-//    
+    public boolean equals(Object obj) {
+        if(obj==null)
+            return false;
+        if(this==obj)
+            return true;
+        if(this.getClass()!=obj.getClass())
+            return false;
+        Mascota masc = (Mascota)obj;
+        if(!(Objects.equals(masc.dueno.getEmail(), this.dueno.getEmail())))
+            return false;
+        return ((Objects.equals(masc.getNombre(),this.getNombre()))&&(Objects.equals(masc.getRaza(), this.getRaza())));
+    }
+    
     public void saveFile(String nomfile){
         try(PrintWriter pw = new PrintWriter(new FileOutputStream(new File(nomfile), true))){
-            pw.println(this.id + "|" + this.nombre + "|" + this.raza + "|" + this.fechaNacimiento + "|" + this.tipo + "|" + this.idDueno);
+            pw.println(this.id + "|" + this.nombre + "|" + this.raza + "|" + this.fechaNacimiento + "|" + this.tipo + "|" + this.idDueno + "|" + this.dueno.getEmail());
         }
         catch(Exception e){
             System.out.println(e.getMessage());
@@ -154,19 +156,22 @@ public class Mascota {
         String raza = sc.next();
         System.out.println("-> Ingrese dia de nacimiento:");
         int dia = sc.nextInt();
-        while((dia<=0)&&(dia>31))
+        while((dia<=0)&&(dia>31)){
             System.out.println("-> Ingrese dia de nacimiento:");
             dia = sc.nextInt();
+        }
         System.out.println("-> Ingrese mes de nacimiento en numeros:");
         int mes = sc.nextInt();
-        while((dia >= 30)&&((mes == 2)||(mes == 02)))
+        while((dia >= 30)&&((mes == 2)||(mes == 02))){
             System.out.println("-> Ingrese mes de nacimiento en numeros:");
             mes = sc.nextInt();
+        }
         System.out.println("-> Ingrese año de nacimiento:");
         int an = sc.nextInt();
-        while((an < 2000)&&(an > 2021))
+        while((an < 2000)&&(an > 2021)){
             System.out.println("-> Ingrese año de nacimiento:");
             an = sc.nextInt();
+        }
         LocalDate nacimiento = LocalDate.of(an,mes,dia);
         System.out.println("-> Ingrese tipo:");
         String tipo = sc.next();
@@ -179,20 +184,15 @@ public class Mascota {
     
     public static ArrayList<Mascota> readFromFile(String nomfile){
         ArrayList<Mascota> mascotas = new ArrayList<>();
+        String email = null;
         try(Scanner sc = new Scanner(new File(nomfile))){
             while(sc.hasNextLine()){
                 String linea = sc.nextLine();
                 String[] arreglo = linea.split("\\|");
                 String[] fecha = arreglo[3].split("-");
                 LocalDate nacimiento = LocalDate.of(Integer.parseInt(fecha[0]),Integer.parseInt(fecha[1]),Integer.parseInt(fecha[2]));
-                ArrayList<Dueno> duenos = Dueno.readFromFile("dueños.txt");
-                String email;
-                for(Dueno dueno: duenos){
-                    if(dueno.getId() == Integer.parseInt(arreglo[6]))
-                        email = dueno.getEmail();
-                }
-                Mascota masc = new Mascota(arreglo[1], arreglo[2], nacimiento, arreglo[4], email); //como usar variable email
-                mascotas.add(masc);
+                Mascota mascota = new Mascota(arreglo[1], arreglo[2], nacimiento, arreglo[4], arreglo[6]);
+                mascotas.add(mascota);
             }
         }
         catch(Exception e){

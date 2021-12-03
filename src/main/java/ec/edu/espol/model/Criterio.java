@@ -17,18 +17,18 @@ import java.util.Scanner;
  *
  * @author Usuario
  */
-public class Premio {
+public class Criterio {
     private int id;
-    private int lugar;
     private String descripcion;
+    private ArrayList<Evaluacion> evaluaciones;
     private int idConcurso;
     private Concurso concurso;
     //constructor
     
-    public Premio(int lugar, String descripcion, String nombreConcurso){
-        this.id = Util.nextID("premios.txt");
-        this.lugar = lugar;
+    public Criterio(String descripcion, String nombreConcurso){
+        this.id = Util.nextID("criterios.txt");
         this.descripcion = descripcion;
+        this.evaluaciones = new ArrayList<>();
         ArrayList<Concurso> concursos = Concurso.readFromFile("concursos.txt");
         for(Concurso conc: concursos){
             if(Objects.equals(conc.getNombre(), nombreConcurso)){
@@ -43,12 +43,12 @@ public class Premio {
         this.id = id;
     }
 
-    public void setLugar(int lugar) {
-        this.lugar = lugar;
-    }
-
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    public void setEvaluaciones(ArrayList<Evaluacion> evaluaciones) {
+        this.evaluaciones = evaluaciones;
     }
 
     public void setIdConcurso(int idConcurso) {
@@ -58,19 +58,18 @@ public class Premio {
     public void setConcurso(Concurso concurso) {
         this.concurso = concurso;
     }
-    
     //getters
 
     public int getId() {
         return id;
     }
 
-    public int getLugar() {
-        return lugar;
-    }
-
     public String getDescripcion() {
         return descripcion;
+    }
+
+    public ArrayList<Evaluacion> getEvaluaciones() {
+        return evaluaciones;
     }
 
     public int getIdConcurso() {
@@ -80,15 +79,13 @@ public class Premio {
     public Concurso getConcurso() {
         return concurso;
     }
-    
     //comportamientos
     
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("ID Premio: ").append(this.id).append(" --> ");
-        sb.append("Lugar: ").append(this.lugar);
-        sb.append(". Descripcion: ").append(this.descripcion);
+        sb.append("ID Criterio: ").append(this.id).append(" --> ");
+        sb.append("Descripcion: ").append(this.descripcion);
         sb.append("--> ID Concurso: ").append(this.idConcurso);
         return sb.toString();
     }
@@ -101,38 +98,39 @@ public class Premio {
             return true;
         if(this.getClass()!=obj.getClass())
             return false;
-        Premio premio = (Premio)obj;
-        return Objects.equals(this.descripcion,premio.descripcion);
+        Criterio crit = (Criterio)obj;
+        return Objects.equals(this.descripcion,crit.descripcion);
     }
     
     public void saveFile(String nomfile){
         try(PrintWriter pw = new PrintWriter(new FileOutputStream(new File(nomfile), true))){
-            pw.println(this.id + "|" + this.lugar + "|" + this.descripcion + "|" + this.idConcurso + "|" + this.concurso.getNombre());
+            pw.println(this.id + "|" + this.descripcion + "|" + this.evaluaciones + "|" + this.idConcurso + "|" + this.concurso.getNombre() );
         }
         catch(Exception e){
             System.out.println(e.getMessage());
         }
     }
     
-    public static Premio nextPremio(int lugar, String descripcion, String nombreConcurso){ //no usaremos el scanner porque las descripciones se pedian primero y el nombre del concurso se pedia una sola vez al final, por lo tanto no era posible pedir informacion por scanner en este metodo
-        Premio premio = new Premio(lugar, descripcion, nombreConcurso);
-        premio.saveFile("premios.txt");
-        return premio;
+    public static Criterio nextCriterio(String descripcion, String nombreConcurso){ //no usaremos el scanner porque las descripciones se pedian primero y el nombre del concurso se pedia una sola vez al final, por lo tanto no era posible pedir informacion por scanner en este metodo
+        Criterio criterio = new Criterio(descripcion, nombreConcurso);
+        criterio.saveFile("premios.txt");
+        return criterio;
     }
     
-    public static ArrayList<Premio> readFromFile(String nomfile){
-        ArrayList<Premio> premios = new ArrayList<>();
+    public static ArrayList<Dueno> readFromFile(String nomfile){
+        ArrayList<Criterio> criterios = new ArrayList<>();
         try(Scanner sc = new Scanner(new File(nomfile))){
             while(sc.hasNextLine()){
                 String linea = sc.nextLine();
                 String[] arreglo = linea.split("\\|");
-                Premio premio = new Premio(Integer.parseInt(arreglo[1]),arreglo[2],arreglo[4]);
-                premios.add(premio);
+                Criterio criterio = new Criterio(arreglo[1], arreglo[4]);
+                criterios.add(criterio);
             }
         }
         catch(Exception e){
             System.out.println(e.getMessage());
         }
-        return premios;
+        return duenos;
         }
+    }
 }
