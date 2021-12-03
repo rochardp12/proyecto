@@ -114,9 +114,25 @@ public class Premio {
         }
     }
     
-    public static void nextPremio(int lugar, String descripcion, String nombreConcurso){ //no usaremos el scanner porque las descripciones se pedian primero y el nombre del concurso se pedia una sola vez al final, por lo tanto no era posible pedir informacion por scanner en este metodo
-        Premio premio = new Premio(lugar, descripcion, nombreConcurso);
-        premio.saveFile("premios.txt");
+    public static void nextPremio(Scanner sc){
+        System.out.println("Ingrese cantidad de premios:");
+        int cantidad = sc.nextInt();
+        while(cantidad<=0){
+            System.out.println("Ingrese cantidad de premios:");
+            cantidad = sc.nextInt();
+        }
+        String[] descripciones = new String[cantidad];
+        for(int i=0; i<cantidad; i++){
+            System.out.println("Ingrese descripcion del premio " + (i+1) + ":");
+            String descripcion = sc.next();
+            descripciones[i] = descripcion;
+        }
+        System.out.println("Ingrese nombre del concurso:");
+        String concurso = sc.next();
+        for(int u=0; u<cantidad; u++){
+            Premio premio = new Premio(u+1, descripciones[u], concurso);
+            premio.saveFile("premios.txt");
+        }
     }
     
     public static ArrayList<Premio> readFromFile(String nomfile){

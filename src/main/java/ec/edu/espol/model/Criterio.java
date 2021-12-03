@@ -111,9 +111,25 @@ public class Criterio {
         }
     }
     
-    public static void nextCriterio(String descripcion, String nombreConcurso){
-        Criterio criterio = new Criterio(descripcion, nombreConcurso);
-        criterio.saveFile("premios.txt");
+    public static void nextCriterio(Scanner sc){
+        System.out.println("Ingrese cantidad de criterios:");
+        int cantidad = sc.nextInt();
+        while(cantidad<=0){
+            System.out.println("Ingrese cantidad de criterios:");
+            cantidad = sc.nextInt();
+        }
+        String[] descripciones = new String[cantidad];
+        for(int i=0; i<cantidad; i++){
+            System.out.println("Ingrese descripcion del criterio " + (i+1) + ":");
+            String descripcion = sc.next();
+            descripciones[i] = descripcion;
+        }
+        System.out.println("Ingrese nombre del concurso:");
+        String concurso = sc.next();
+        for(int u=0; u<cantidad; u++){
+            Criterio criterio = new Criterio(descripciones[u], concurso);
+            criterio.saveFile("criterios.txt");
+        }
     }
     
     public static ArrayList<Criterio> readFromFile(String nomfile){
