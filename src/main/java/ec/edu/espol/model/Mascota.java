@@ -154,22 +154,22 @@ public class Mascota {
         String nombre = sc.next();
         System.out.println("-> Ingrese raza:");
         String raza = sc.next();
-        System.out.println("-> Ingrese dia de nacimiento:");
+        System.out.println("-> Ingrese dia de nacimiento (dd) :");
         int dia = sc.nextInt();
         while((dia<=0)&&(dia>31)){
-            System.out.println("-> Ingrese dia de nacimiento:");
+            System.out.println("-> Ingrese dia de nacimiento (dd) :");
             dia = sc.nextInt();
         }
-        System.out.println("-> Ingrese mes de nacimiento en numeros:");
+        System.out.println("-> Ingrese mes de nacimiento en numeros (mm) :");
         int mes = sc.nextInt();
         while((dia >= 30)&&((mes == 2)||(mes == 02))){
-            System.out.println("-> Ingrese mes de nacimiento en numeros:");
+            System.out.println("-> Ingrese mes de nacimiento en numeros (mm) :");
             mes = sc.nextInt();
         }
-        System.out.println("-> Ingrese año de nacimiento:");
+        System.out.println("-> Ingrese año de nacimiento (yyyy) :");
         int an = sc.nextInt();
         while((an < 2000)&&(an > 2021)){
-            System.out.println("-> Ingrese año de nacimiento:");
+            System.out.println("-> Ingrese año de nacimiento (yyyy) :");
             an = sc.nextInt();
         }
         LocalDate nacimiento = LocalDate.of(an,mes,dia);

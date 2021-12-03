@@ -135,47 +135,64 @@ public class Inscripcion {
             return true;
         if(this.getClass()!=obj.getClass())
             return false;
-        Dueno dueno = (Dueno)obj;
-        return Objects.equals(this.email,dueno.email);
+        Inscripcion ins = (Inscripcion)obj;
+        return ((this.idMascota == ins.idMascota)&&(this.idConcurso == ins.idMascota));
     }
     
     public void saveFile(String nomfile){
         try(PrintWriter pw = new PrintWriter(new FileOutputStream(new File(nomfile), true))){
-            pw.println(this.id + "|" + this.nombres + "|" + this.apellidos + "|" + this.direccion + "|" + this.telefono + "|" + this.email);
+            pw.println(this.id + "|" + this.idMascota + "|" + this.mascota.getNombre() + "|" + this.idConcurso + "|" + this.concurso.getNombre() + "|" + this.valor + "|" + this.fechaInscripcion + "|" + this.evaluaciones);
         }
         catch(Exception e){
             System.out.println(e.getMessage());
         }
     }
     
-    public static void nextDueno(Scanner sc){
-        System.out.println("-> Ingrese nombres:");
-        String nombres = sc.next();
-        System.out.println("-> Ingrese apellidos:");
-        String apellidos = sc.next();
-        System.out.println("-> Ingrese direccion de vivienda:");
-        String direccion = sc.next();
-        System.out.println("-> Ingrese telefono de contacto:");
-        String telefono = sc.next();
-        System.out.println("-> Ingrese e-mail:");
-        String email = sc.next();
-        Dueno dueno = new Dueno(nombres, apellidos, direccion, telefono, email);
-        dueno.saveFile("dueños.txt");
+    public static void nextInscripcion(Scanner sc){
+        System.out.println("-> Ingrese nombre de la mascota:");
+        String nombreMascota = sc.next();
+        System.out.println("-> Ingrese nombre del concurso:");
+        String nombreConcurso = sc.next();
+        System.out.println("-> Ingrese valor a pagar:");
+        double valor = sc.nextDouble();
+        System.out.println("-> Ingrese dia de inscripcion (dd):");
+        int dia = sc.nextInt();
+        while((dia<=0)&&(dia>31)){
+            System.out.println("-> Ingrese dia de inscripcion (dd):");
+            dia = sc.nextInt();
+        }
+        System.out.println("-> Ingrese mes de inscripcion en numeros (mm):");
+        int mes = sc.nextInt();
+        while((dia >= 30)&&((mes == 2)||(mes == 02))){
+            System.out.println("-> Ingrese mes de inscripcion en numeros(mm) :");
+            mes = sc.nextInt();
+        }
+        System.out.println("-> Ingrese año de inscripcion (yyyy) :");
+        int an = sc.nextInt();
+        while((an < 2000)&&(an > 2021)){
+            System.out.println("-> Ingrese año de inscripcion (yyyy) :");
+            an = sc.nextInt();
+        }
+        LocalDate fechaInscripcion = LocalDate.of(an,mes,dia);
+        Inscripcion inscripcion = new Inscripcion(nombreMascota, nombreConcurso, valor, fechaInscripcion);
+        inscripcion.saveFile("inscripciones.txt");
     }
     
-    public static ArrayList<Dueno> readFromFile(String nomfile){
-        ArrayList<Dueno> duenos = new ArrayList<>();
+    public static ArrayList<Inscripcion> readFromFile(String nomfile){
+        ArrayList<Inscripcion> inscripciones = new ArrayList<>();
         try(Scanner sc = new Scanner(new File(nomfile))){
             while(sc.hasNextLine()){
                 String linea = sc.nextLine();
                 String[] arreglo = linea.split("\\|");
-                Dueno dueno = new Dueno(arreglo[1], arreglo[2], arreglo[3], arreglo[4], arreglo[5]);
-                duenos.add(dueno);
+                String[] fecha = arreglo[6].split("-");
+                LocalDate fechaInscripcion = LocalDate.of(Integer.parseInt(fecha[0]),Integer.parseInt(fecha[1]),Integer.parseInt(fecha[2]));
+                Inscripcion inscripcion = new Inscripcion(arreglo[2], arreglo[4], Double.parseDouble(arreglo[5]), fechaInscripcion);
+                inscripciones.add(inscripcion);
             }
         }
         catch(Exception e){
             System.out.println(e.getMessage());
         }
-        return duenos;
+        return inscripciones;
         }
 }
