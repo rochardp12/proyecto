@@ -25,17 +25,12 @@ public class Premio {
     private Concurso concurso;
     //constructor
     
-    public Premio(int lugar, String descripcion, String nombreConcurso){
+    public Premio(int lugar, String descripcion, Concurso concurso){
         this.id = Util.nextID("premios.txt");
         this.lugar = lugar;
         this.descripcion = descripcion;
-        ArrayList<Concurso> concursos = Concurso.readFromFile("concursos.txt");
-        for(Concurso conc: concursos){
-            if(Objects.equals(conc.getNombre(), nombreConcurso)){
-                this.idConcurso = conc.getId();
-                this.concurso = conc;
-            }
-        }
+        this.idConcurso = concurso.getId();
+        this.concurso = concurso;
     }
     //setters
 
@@ -128,7 +123,12 @@ public class Premio {
             descripciones[i] = descripcion;
         }
         System.out.println("Ingrese nombre del concurso:");
-        String concurso = sc.next();
+        String nombreConcurso = sc.next();
+        while(Concurso.verificarNombre(nombreConcurso) == null){
+            System.out.println("Ingrese nombre del concurso:");
+            nombreConcurso = sc.next(); 
+        }
+        Concurso concurso = Concurso.verificarNombre(nombreConcurso);
         for(int u=0; u<cantidad; u++){
             Premio premio = new Premio(u+1, descripciones[u], concurso);
             premio.saveFile("premios.txt");
@@ -141,7 +141,7 @@ public class Premio {
             while(sc.hasNextLine()){
                 String linea = sc.nextLine();
                 String[] arreglo = linea.split("\\|");
-                Premio premio = new Premio(Integer.parseInt(arreglo[1]),arreglo[2],arreglo[4]);
+                Premio premio = new Premio(Integer.parseInt(arreglo[1]),arreglo[2],Concurso.verificarNombre(arreglo[4]));
                 premios.add(premio);
             }
         }

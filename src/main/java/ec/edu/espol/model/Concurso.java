@@ -184,4 +184,13 @@ public class Concurso {
         }
         return concursos;
         }
+    
+    public static Concurso verificarNombre(String nombreConcurso){
+        ArrayList<Concurso> concursos = readFromFile("concursos.txt");
+        for(Concurso concurso: concursos){
+            if(Objects.equals(concurso.nombre,nombreConcurso))
+                return concurso;
+        }
+        return null;
+    }
 }

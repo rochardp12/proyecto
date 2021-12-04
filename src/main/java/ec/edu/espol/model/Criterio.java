@@ -26,17 +26,12 @@ public class Criterio {
     private Concurso concurso;
     //constructor
     
-    public Criterio(String descripcion, String nombreConcurso){
+    public Criterio(String descripcion, Concurso concurso){
         this.id = Util.nextID("criterios.txt");
         this.descripcion = descripcion;
         this.evaluaciones = new ArrayList<>();
-        ArrayList<Concurso> concursos = Concurso.readFromFile("concursos.txt");
-        for(Concurso conc: concursos){
-            if(Objects.equals(conc.getNombre(), nombreConcurso)){
-                this.idConcurso = conc.getId();
-                this.concurso = conc;
-            }
-        }
+        this.idConcurso = concurso.getId();
+        this.concurso = concurso;
     }
     //setters
 
@@ -126,7 +121,12 @@ public class Criterio {
             descripciones[i] = descripcion;
         }
         System.out.println("Ingrese nombre del concurso:");
-        String concurso = sc.next();
+        String nombreConcurso = sc.next();
+        while(Concurso.verificarNombre(nombreConcurso) == null){
+            System.out.println("Ingrese nombre del concurso:");
+            nombreConcurso = sc.next();
+        }
+        Concurso concurso = Concurso.verificarNombre(nombreConcurso);
         for(int u=0; u<cantidad; u++){
             Criterio criterio = new Criterio(descripciones[u], concurso);
             criterio.saveFile("criterios.txt");
@@ -139,7 +139,7 @@ public class Criterio {
             while(sc.hasNextLine()){
                 String linea = sc.nextLine();
                 String[] arreglo = linea.split("\\|");
-                Criterio criterio = new Criterio(arreglo[1], arreglo[4]);
+                Criterio criterio = new Criterio(arreglo[1], Concurso.verificarNombre(arreglo[4]));
                 criterios.add(criterio);
             }
         }

@@ -159,4 +159,13 @@ public class Dueno {
         }
         return duenos;
         }
+    
+    public static Dueno verificarEmail(String email){
+        ArrayList<Dueno> duenos = readFromFile("dueños.txt");
+        for(Dueno dueno: duenos){
+            if(Objects.equals(dueno.email,email))
+                return dueno;
+        }
+        return null;
+    }
 }
