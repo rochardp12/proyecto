@@ -39,8 +39,7 @@ public class Concurso {
         this.fechaInscripcion = fechaInscripcion;
         this.fechaCierreInscripcion = fechaCierreInscripcion;
         this.tematica = tematica;
-        if(costoInscripcion >= 0)
-            this.costoInscripcion = costoInscripcion;
+        this.costoInscripcion = costoInscripcion;
         this.inscripciones = new ArrayList<>();
         this.premios = new ArrayList<>();
         this.criterios = new ArrayList<>();
@@ -162,6 +161,77 @@ public class Concurso {
         }
     }
     
+    public static void nextConcurso(Scanner sc){
+        System.out.println("Ingrese nombre del concurso:");
+        String nombreConcurso = sc.next();
+        System.out.println("-> Ingrese dia de inicio del concurso (dd):");
+        int dia = sc.nextInt();
+        while((dia<=0)||(dia>31)){
+            System.out.println("-> Ingrese dia de inicio del concurso (dd):");
+            dia = sc.nextInt();
+        }
+        System.out.println("-> Ingrese mes de inicio del concurso en numeros (mm):");
+        int mes = sc.nextInt();
+        while((dia >= 30)&&((mes == 2)||(mes == 02))){
+            System.out.println("-> Ingrese mes de inicio del concurso en numeros(mm) :");
+            mes = sc.nextInt();
+        }
+        System.out.println("-> Ingrese año de inicio del concurso (yyyy) :");
+        int an = sc.nextInt();
+        while(an < 2021){
+            System.out.println("-> Ingrese año de inicio del concurso (yyyy) :");
+            an = sc.nextInt();
+        }
+        LocalDate fecha = LocalDate.of(an,mes,dia);
+        System.out.println("-> Ingrese dia de inicio de inscripcion al concurso (dd):");
+        int diaIns = sc.nextInt();
+        while((diaIns<=0)||(diaIns>31)){
+            System.out.println("-> Ingrese dia de inicio de inscripcion al concurso (dd):");
+            diaIns = sc.nextInt();
+        }
+        System.out.println("-> Ingrese mes de inicio de inscripcion al concurso en numeros (mm):");
+        int mesIns = sc.nextInt();
+        while((diaIns >= 30)&&((mesIns == 2)||(mesIns == 02))){
+            System.out.println("-> Ingrese mes de inicio de inscripcion al concurso en numeros(mm) :");
+            mes = sc.nextInt();
+        }
+        System.out.println("-> Ingrese año de inicio de inscripcion al concurso (yyyy) :");
+        int anIns = sc.nextInt();
+        while(an < 2021){
+            System.out.println("-> Ingrese año de inicio de inscripcion al concurso (yyyy) :");
+            anIns = sc.nextInt();
+        }
+        LocalDate fechaIns = LocalDate.of(anIns,mesIns,diaIns);
+        System.out.println("-> Ingrese dia de cierre de inscripcion al concurso (dd):");
+        int diaCie = sc.nextInt();
+        while((diaCie<=0)||(diaCie>31)){
+            System.out.println("-> Ingrese dia de cierre de inscripcion al concurso (dd):");
+            diaCie = sc.nextInt();
+        }
+        System.out.println("-> Ingrese mes de cierre de inscripcion al concurso en numeros (mm):");
+        int mesCie = sc.nextInt();
+        while((diaCie >= 30)&&((mesCie == 2)||(mesCie == 02))){
+            System.out.println("-> Ingrese mes de cierre de inscripcion al concurso en numeros(mm) :");
+            mesCie = sc.nextInt();
+        }
+        System.out.println("-> Ingrese año de cierre de inscripcion al concurso (yyyy) :");
+        int anCie = sc.nextInt();
+        while(anCie < 2021){
+            System.out.println("-> Ingrese año de cierre de inscripcion al concurso (yyyy) :");
+            anCie = sc.nextInt();
+        }
+        LocalDate fechaCie = LocalDate.of(anCie,mesCie,diaCie);
+        System.out.println("Ingrese tematica del concurso:");
+        String tematica = sc.next();
+        System.out.println("Ingrese costo de inscripcion:");
+        double costo = sc.nextDouble();
+        while(costo<0){
+            System.out.println("Ingrese costo de inscripcion:");
+            costo = sc.nextDouble();
+        }
+        Concurso concurso = new Concurso(nombreConcurso, fecha, fechaIns, fechaCie, tematica, costo);
+        concurso.saveFile("concursos.txt");
+    }
     
     public static ArrayList<Concurso> readFromFile(String nomfile){
         ArrayList<Concurso> concursos = new ArrayList<>();

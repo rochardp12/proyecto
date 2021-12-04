@@ -161,7 +161,7 @@ public class Inscripcion {
         }
         System.out.println("-> Ingrese dia de inscripcion (dd):");
         int dia = sc.nextInt();
-        while((dia<=0)&&(dia>31)){
+        while((dia<=0)||(dia>31)){
             System.out.println("-> Ingrese dia de inscripcion (dd):");
             dia = sc.nextInt();
         }
@@ -173,7 +173,7 @@ public class Inscripcion {
         }
         System.out.println("-> Ingrese año de inscripcion (yyyy) :");
         int an = sc.nextInt();
-        while(an > 2021){
+        while(an < 2021){
             System.out.println("-> Ingrese año de inscripcion (yyyy) :");
             an = sc.nextInt();
         }

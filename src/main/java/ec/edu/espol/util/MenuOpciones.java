@@ -7,7 +7,10 @@ package ec.edu.espol.util;
 
 import ec.edu.espol.model.Criterio;
 import ec.edu.espol.model.Dueno;
+import ec.edu.espol.model.Evaluacion;
+import ec.edu.espol.model.Inscripcion;
 import ec.edu.espol.model.Mascota;
+import ec.edu.espol.model.MiembroJurado;
 import ec.edu.espol.model.Premio;
 import java.util.Scanner;
 
@@ -45,6 +48,13 @@ public class MenuOpciones {
                 case 4: Premio.nextPremio(sc);
                     break;
                 case 5: Criterio.nextCriterio(sc);
+                    break;
+                case 6: Inscripcion.nextInscripcion(sc);
+                    break;
+                case 7: MiembroJurado.nextMiembroJurado(sc);
+                    break;
+                case 8: Evaluacion.nextEvaluacion(sc);
+                    break;
                     }        
             }
         }

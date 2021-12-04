@@ -151,7 +151,7 @@ public class Mascota {
         String raza = sc.next();
         System.out.println("-> Ingrese dia de nacimiento (dd) :");
         int dia = sc.nextInt();
-        while((dia<=0)&&(dia>31)){
+        while((dia<=0)||(dia>31)){
             System.out.println("-> Ingrese dia de nacimiento (dd) :");
             dia = sc.nextInt();
         }
@@ -163,7 +163,7 @@ public class Mascota {
         }
         System.out.println("-> Ingrese año de nacimiento (yyyy) :");
         int an = sc.nextInt();
-        while((an < 2000)&&(an > 2021)){
+        while((an < 2000)||(an > 2021)){
             System.out.println("-> Ingrese año de nacimiento (yyyy) :");
             an = sc.nextInt();
         }
