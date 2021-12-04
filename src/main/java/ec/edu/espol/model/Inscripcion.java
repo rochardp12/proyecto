@@ -75,35 +75,35 @@ public class Inscripcion {
     //getters
 
     public int getId() {
-        return id;
+        return this.id;
     }
 
     public int getIdMascota() {
-        return idMascota;
+        return this.idMascota;
     }
 
     public Mascota getMascota() {
-        return mascota;
+        return this.mascota;
     }
 
     public int getIdConcurso() {
-        return idConcurso;
+        return this.idConcurso;
     }
 
     public Concurso getConcurso() {
-        return concurso;
+        return this.concurso;
     }
 
     public double getValor() {
-        return valor;
+        return this.valor;
     }
 
     public LocalDate getFechaInscripcion() {
-        return fechaInscripcion;
+        return this.fechaInscripcion;
     }
 
     public ArrayList<Evaluacion> getEvaluaciones() {
-        return evaluaciones;
+        return this.evaluaciones;
     }
     //comportamientos
     

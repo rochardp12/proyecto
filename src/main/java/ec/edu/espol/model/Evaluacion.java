@@ -73,38 +73,36 @@ public class Evaluacion {
     //getters
 
     public int getId() {
-        return id;
+        return this.id;
     }
 
     public int getIdInscripcion() {
-        return idInscripcion;
+        return this.idInscripcion;
     }
 
     public Inscripcion getInscripcion() {
-        return inscripcion;
+        return this.inscripcion;
     }
 
     public int getIdMiembroJurado() {
-        return idMiembroJurado;
+        return this.idMiembroJurado;
     }
 
     public MiembroJurado getMiembroJurado() {
-        return miembroJurado;
+        return this.miembroJurado;
     }
 
     public double getNota() {
-        return nota;
+        return this.nota;
     }
 
     public int getIdCriterio() {
-        return idCriterio;
+        return this.idCriterio;
     }
 
     public Criterio getCriterio() {
-        return criterio;
+        return this.criterio;
     }
-    
-    
     //comportamientos
     
     @Override

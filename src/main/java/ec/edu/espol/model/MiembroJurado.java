@@ -68,31 +68,31 @@ public class MiembroJurado {
     //getters
 
     public int getId() {
-        return id;
+        return this.id;
     }
 
     public String getNombres() {
-        return nombres;
+        return this.nombres;
     }
 
     public String getApellidos() {
-        return apellidos;
+        return this.apellidos;
     }
 
     public String getTelefono() {
-        return telefono;
+        return this.telefono;
     }
 
     public String getEmail() {
-        return email;
+        return this.email;
     }
 
     public String getPerfilProfesional() {
-        return perfilProfesional;
+        return this.perfilProfesional;
     }
 
     public ArrayList<Evaluacion> getEvaluaciones() {
-        return evaluaciones;
+        return this.evaluaciones;
     }
     //comportamientos
     

@@ -57,23 +57,23 @@ public class Criterio {
     //getters
 
     public int getId() {
-        return id;
+        return this.id;
     }
 
     public String getDescripcion() {
-        return descripcion;
+        return this.descripcion;
     }
 
     public ArrayList<Evaluacion> getEvaluaciones() {
-        return evaluaciones;
+        return this.evaluaciones;
     }
 
     public int getIdConcurso() {
-        return idConcurso;
+        return this.idConcurso;
     }
 
     public Concurso getConcurso() {
-        return concurso;
+        return this.concurso;
     }
     //comportamientos
     

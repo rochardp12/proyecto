@@ -75,35 +75,35 @@ public class Mascota {
     //getters
 
     public int getId() {
-        return id;
+        return this.id;
     }
 
     public String getNombre() {
-        return nombre;
+        return this.nombre;
     }
 
     public String getRaza() {
-        return raza;
+        return this.raza;
     }
 
     public LocalDate getFechaNacimiento() {
-        return fechaNacimiento;
+        return this.fechaNacimiento;
     }
 
     public String getTipo() {
-        return tipo;
+        return this.tipo;
     }
 
     public int getIdDueno() {
-        return idDueno;
+        return this.idDueno;
     }
 
     public Dueno getDueno() {
-        return dueno;
+        return this.dueno;
     }
 
     public ArrayList<Inscripcion> getInscripciones() {
-        return inscripciones;
+        return this.inscripciones;
     }
     //comportamientos
     
@@ -168,7 +168,7 @@ public class Mascota {
             an = sc.nextInt();
         }
         LocalDate nacimiento = LocalDate.of(an,mes,dia);
-        System.out.println("-> Ingrese tipo:");
+        System.out.println("-> Ingrese tipo (Perro/Gato) :");
         String tipo = sc.next();
         System.out.println("-> Ingrese e-mail del dueño:");
         String email = sc.next();

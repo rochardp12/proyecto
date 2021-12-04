@@ -57,25 +57,24 @@ public class Premio {
     //getters
 
     public int getId() {
-        return id;
+        return this.id;
     }
 
     public int getLugar() {
-        return lugar;
+        return this.lugar;
     }
 
     public String getDescripcion() {
-        return descripcion;
+        return this.descripcion;
     }
 
     public int getIdConcurso() {
-        return idConcurso;
+        return this.idConcurso;
     }
 
     public Concurso getConcurso() {
-        return concurso;
+        return this.concurso;
     }
-    
     //comportamientos
     
     @Override

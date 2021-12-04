@@ -89,43 +89,43 @@ public class Concurso {
     //getters
 
     public int getId() {
-        return id;
+        return this.id;
     }
 
     public String getNombre() {
-        return nombre;
+        return this.nombre;
     }
 
     public LocalDate getFecha() {
-        return fecha;
+        return this.fecha;
     }
 
     public LocalDate getFechaInscripcion() {
-        return fechaInscripcion;
+        return this.fechaInscripcion;
     }
 
     public LocalDate getFechaCierreInscripcion() {
-        return fechaCierreInscripcion;
+        return this.fechaCierreInscripcion;
     }
 
     public String getTematica() {
-        return tematica;
+        return this.tematica;
     }
 
     public double getCostoInscripcion() {
-        return costoInscripcion;
+        return this.costoInscripcion;
     }
 
     public ArrayList<Inscripcion> getInscripciones() {
-        return inscripciones;
+        return this.inscripciones;
     }
 
     public ArrayList<Premio> getPremios() {
-        return premios;
+        return this.premios;
     }
 
     public ArrayList<Criterio> getCriterios() {
-        return criterios;
+        return this.criterios;
     }
     //comportamientos
     

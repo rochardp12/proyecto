@@ -20,7 +20,14 @@ public class Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         sc.useDelimiter("\n");
+        
+        System.out.println("+-----------------------+");
+        System.out.println("| CONCURSOS DE MASCOTAS |");
+        System.out.println("+-----------------------+");
+        
         MenuOpciones.menuOpciones(sc);
+        
+        sc.close();
     }
     
 }
