@@ -5,14 +5,7 @@
  */
 package ec.edu.espol.util;
 
-import ec.edu.espol.model.Concurso;
-import ec.edu.espol.model.Criterio;
-import ec.edu.espol.model.Dueno;
-import ec.edu.espol.model.Evaluacion;
-import ec.edu.espol.model.Inscripcion;
-import ec.edu.espol.model.Mascota;
-import ec.edu.espol.model.MiembroJurado;
-import ec.edu.espol.model.Premio;
+import ec.edu.espol.model.*;
 import java.util.Scanner;
 
 /**

@@ -1,2 +1,0 @@
-1|Mascara|[]|2|Superheroes
-2|Torso|[]|2|Superheroes

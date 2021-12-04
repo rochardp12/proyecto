@@ -116,17 +116,19 @@ public class Evaluacion {
         return sb.toString();
     }
     
-//    @Override
-//    public boolean equals(Object obj) {
-//        if(obj==null)
-//            return false;
-//        if(this==obj)
-//            return true;
-//        if(this.getClass()!=obj.getClass())
-//            return false;
-//        Dueno dueno = (Dueno)obj;
-//        return Objects.equals(this.email,dueno.email);
-//    }
+    @Override
+    public boolean equals(Object obj) {
+        if(obj==null)
+            return false;
+        if(this==obj)
+            return true;
+        if(this.getClass()!=obj.getClass())
+            return false;
+        Evaluacion evaluacion = (Evaluacion)obj;
+        if(evaluacion.nota != this.nota)
+            return false;
+        return (((evaluacion.idInscripcion == this.idInscripcion)&&(evaluacion.idMiembroJurado == this.idMiembroJurado))&&(evaluacion.idCriterio == this.idCriterio));
+    }
     
     public void saveFile(String nomfile){
         try(PrintWriter pw = new PrintWriter(new FileOutputStream(new File(nomfile), true))){
