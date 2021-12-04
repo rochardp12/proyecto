@@ -132,7 +132,7 @@ public class Evaluacion {
     
     public void saveFile(String nomfile){
         try(PrintWriter pw = new PrintWriter(new FileOutputStream(new File(nomfile), true))){
-            pw.println(this.id + "|" + this.nombres + "|" + this.apellidos + "|" + this.direccion + "|" + this.telefono + "|" + this.email);
+            pw.println(this.id + "|" + this.idInscripcion + "|" + this.idMiembroJurado + "|" + this.idCriterio + "|" + this.nota);
         }
         catch(Exception e){
             System.out.println(e.getMessage());
@@ -163,10 +163,28 @@ public class Evaluacion {
         Criterio criterio = Criterio.verificarID(idCri);
         System.out.println("-> Ingrese nota de evaluacion:");
         double nota = sc.nextDouble();
+        while(nota<0){
+            System.out.println("-> Ingrese nota de evaluacion:");
+            nota = sc.nextDouble();
+        }
         Evaluacion evaluacion = new Evaluacion(jurado, inscripcion, criterio, nota);
-        evaluacion.saveFile("dueños.txt");
+        evaluacion.saveFile("evaluaciones.txt");
     }
     
-
+    public static ArrayList<Evaluacion> readFromFile(String nomfile){
+        ArrayList<Evaluacion> evaluaciones = new ArrayList<>();
+        try(Scanner sc = new Scanner(new File(nomfile))){
+            while(sc.hasNextLine()){
+                String linea = sc.nextLine();
+                String[] arreglo = linea.split("\\|");
+                Evaluacion evaluacion = new Evaluacion(MiembroJurado.verificarID(Integer.parseInt(arreglo[2])),Inscripcion.verificarID(Integer.parseInt(arreglo[1])),Criterio.verificarID(Integer.parseInt(arreglo[3])),Double.parseDouble(arreglo[4]));
+                evaluaciones.add(evaluacion);
+            }
+        }
+        catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+        return evaluaciones;
+        }
 }
 
