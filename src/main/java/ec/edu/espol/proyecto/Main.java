@@ -6,6 +6,7 @@
 package ec.edu.espol.proyecto;
 
 import ec.edu.espol.util.MenuOpciones;
+import java.util.Locale;
 import java.util.Scanner;
 
 /**
@@ -20,13 +21,13 @@ public class Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         sc.useDelimiter("\n");
+        sc.useLocale(Locale.US);
         
         System.out.println("+-----------------------+");
         System.out.println("| CONCURSOS DE MASCOTAS |");
         System.out.println("+-----------------------+");
         
         MenuOpciones.menuOpciones(sc);
-        
         sc.close();
     }
     

@@ -5,6 +5,7 @@
  */
 package ec.edu.espol.model;
 
+import static ec.edu.espol.model.Dueno.readFromFile;
 import ec.edu.espol.util.Util;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -25,8 +26,8 @@ public class Premio {
     private Concurso concurso;
     //constructor
     
-    public Premio(int lugar, String descripcion, Concurso concurso){
-        this.id = Util.nextID("premios.txt");
+    public Premio(int id, int lugar, String descripcion, Concurso concurso){
+        this.id = id;
         this.lugar = lugar;
         this.descripcion = descripcion;
         this.idConcurso = concurso.getId();
@@ -35,7 +36,8 @@ public class Premio {
     //setters
 
     public void setId(int id) {
-        this.id = id;
+        if(verificarID(id) == null)
+            this.id = id;
     }
 
     public void setLugar(int lugar) {
@@ -101,7 +103,7 @@ public class Premio {
     
     public void saveFile(String nomfile){
         try(PrintWriter pw = new PrintWriter(new FileOutputStream(new File(nomfile), true))){
-            pw.println(this.id + "|" + this.lugar + "|" + this.descripcion + "|" + this.idConcurso + "|" + this.concurso.getNombre());
+            pw.println(this.id + "|" + this.lugar + "|" + this.descripcion + "|" + this.concurso.getId() + "|" + this.concurso.getNombre());
         }
         catch(Exception e){
             System.out.println(e.getMessage());
@@ -124,12 +126,12 @@ public class Premio {
         System.out.println("Ingrese nombre del concurso:");
         String nombreConcurso = sc.next();
         while(Concurso.verificarNombre(nombreConcurso) == null){
-            System.out.println("Ingrese nombre del concurso:");
+            System.out.println("Ingrese correctamente el nombre del concurso:");
             nombreConcurso = sc.next(); 
         }
         Concurso concurso = Concurso.verificarNombre(nombreConcurso);
         for(int u=0; u<cantidad; u++){
-            Premio premio = new Premio(u+1, descripciones[u], concurso);
+            Premio premio = new Premio(Util.nextID("premios.txt"), u+1, descripciones[u], concurso);
             premio.saveFile("premios.txt");
         }
     }
@@ -140,7 +142,7 @@ public class Premio {
             while(sc.hasNextLine()){
                 String linea = sc.nextLine();
                 String[] arreglo = linea.split("\\|");
-                Premio premio = new Premio(Integer.parseInt(arreglo[1]),arreglo[2],Concurso.verificarNombre(arreglo[4]));
+                Premio premio = new Premio(Integer.parseInt(arreglo[0]), Integer.parseInt(arreglo[1]),arreglo[2],Concurso.verificarNombre(arreglo[4]));
                 premios.add(premio);
             }
         }
@@ -149,4 +151,13 @@ public class Premio {
         }
         return premios;
         }
+    
+    public static Premio verificarID(int id){
+        ArrayList<Premio> premios = readFromFile("premios.txt");
+        for(Premio premio: premios){
+            if(premio.id == id)
+                return premio;
+        }
+        return null;
+    }
 }

@@ -26,8 +26,8 @@ public class Criterio {
     private Concurso concurso;
     //constructor
     
-    public Criterio(String descripcion, Concurso concurso){
-        this.id = Util.nextID("criterios.txt");
+    public Criterio(int id, String descripcion, Concurso concurso){
+        this.id = id;
         this.descripcion = descripcion;
         this.evaluaciones = new ArrayList<>();
         this.idConcurso = concurso.getId();
@@ -36,7 +36,8 @@ public class Criterio {
     //setters
 
     public void setId(int id) {
-        this.id = id;
+        if(verificarID(id) == null)
+            this.id = id;
     }
 
     public void setDescripcion(String descripcion) {
@@ -100,7 +101,7 @@ public class Criterio {
     
     public void saveFile(String nomfile){
         try(PrintWriter pw = new PrintWriter(new FileOutputStream(new File(nomfile), true))){
-            pw.println(this.id + "|" + this.descripcion + "|" + this.evaluaciones + "|" + this.idConcurso + "|" + this.concurso.getNombre() );
+            pw.println(this.id + "|" + this.descripcion + "|" + this.evaluaciones + "|" + this.concurso.getId() + "|" + this.concurso.getNombre() );
         }
         catch(Exception e){
             System.out.println(e.getMessage());
@@ -111,7 +112,7 @@ public class Criterio {
         System.out.println("Ingrese cantidad de criterios:");
         int cantidad = sc.nextInt();
         while(cantidad<=0){
-            System.out.println("Ingrese cantidad de criterios:");
+            System.out.println("Ingrese correctamente la cantidad de criterios:");
             cantidad = sc.nextInt();
         }
         String[] descripciones = new String[cantidad];
@@ -123,12 +124,12 @@ public class Criterio {
         System.out.println("Ingrese nombre del concurso:");
         String nombreConcurso = sc.next();
         while(Concurso.verificarNombre(nombreConcurso) == null){
-            System.out.println("Ingrese nombre del concurso:");
+            System.out.println("Ingrese correctamente el nombre del concurso:");
             nombreConcurso = sc.next();
         }
         Concurso concurso = Concurso.verificarNombre(nombreConcurso);
         for(int u=0; u<cantidad; u++){
-            Criterio criterio = new Criterio(descripciones[u], concurso);
+            Criterio criterio = new Criterio(Util.nextID("criterios.txt"), descripciones[u], concurso);
             criterio.saveFile("criterios.txt");
         }
     }
@@ -139,7 +140,7 @@ public class Criterio {
             while(sc.hasNextLine()){
                 String linea = sc.nextLine();
                 String[] arreglo = linea.split("\\|");
-                Criterio criterio = new Criterio(arreglo[1], Concurso.verificarNombre(arreglo[4]));
+                Criterio criterio = new Criterio(Integer.parseInt(arreglo[0]), arreglo[1], Concurso.verificarNombre(arreglo[4]));
                 criterios.add(criterio);
             }
         }

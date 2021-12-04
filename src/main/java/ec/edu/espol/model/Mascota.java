@@ -5,6 +5,7 @@
  */
 package ec.edu.espol.model;
 
+import static ec.edu.espol.model.Dueno.readFromFile;
 import ec.edu.espol.util.Util;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -29,8 +30,8 @@ public class Mascota {
     private ArrayList<Inscripcion> inscripciones;
     //constructor
     
-    public Mascota(String nombre, String raza, LocalDate fechaNacimiento, String tipo, Dueno dueno){
-        this.id = Util.nextID("mascotas.txt");
+    public Mascota(int id, String nombre, String raza, LocalDate fechaNacimiento, String tipo, Dueno dueno){
+        this.id = id;
         this.nombre = nombre;
         this.raza = raza;
         this.fechaNacimiento = fechaNacimiento;
@@ -42,7 +43,8 @@ public class Mascota {
     //setters
 
     public void setId(int id) {
-        this.id = id;
+        if(verificarID(id) == null)
+            this.id = id;
     }
 
     public void setNombre(String nombre) {
@@ -137,7 +139,7 @@ public class Mascota {
     
     public void saveFile(String nomfile){
         try(PrintWriter pw = new PrintWriter(new FileOutputStream(new File(nomfile), true))){
-            pw.println(this.id + "|" + this.nombre + "|" + this.raza + "|" + this.fechaNacimiento + "|" + this.tipo + "|" + this.idDueno + "|" + this.dueno.getEmail());
+            pw.println(this.id + "|" + this.nombre + "|" + this.raza + "|" + this.fechaNacimiento + "|" + this.tipo + "|" + this.dueno.getId() + "|" + this.dueno.getEmail());
         }
         catch(Exception e){
             System.out.println(e.getMessage());
@@ -152,19 +154,19 @@ public class Mascota {
         System.out.println("-> Ingrese dia de nacimiento (dd) :");
         int dia = sc.nextInt();
         while((dia<=0)||(dia>31)){
-            System.out.println("-> Ingrese dia de nacimiento (dd) :");
+            System.out.println("-> Ingrese correctamente el dia de nacimiento (dd) :");
             dia = sc.nextInt();
         }
         System.out.println("-> Ingrese mes de nacimiento en numeros (mm) :");
         int mes = sc.nextInt();
         while((dia >= 30)&&((mes == 2)||(mes == 02))){
-            System.out.println("-> Ingrese mes de nacimiento en numeros (mm) :");
+            System.out.println("-> Ingrese correctamente el mes de nacimiento en numeros (mm) :");
             mes = sc.nextInt();
         }
         System.out.println("-> Ingrese año de nacimiento (yyyy) :");
         int an = sc.nextInt();
         while((an < 2000)||(an > 2021)){
-            System.out.println("-> Ingrese año de nacimiento (yyyy) :");
+            System.out.println("-> Ingrese correctamente el año de nacimiento (yyyy) :");
             an = sc.nextInt();
         }
         LocalDate nacimiento = LocalDate.of(an,mes,dia);
@@ -173,24 +175,23 @@ public class Mascota {
         System.out.println("-> Ingrese e-mail del dueño:");
         String email = sc.next();
         while(Dueno.verificarEmail(email) == null){
-            System.out.println("-> Ingrese e-mail del dueño:");
+            System.out.println("-> Ingrese correctamente el e-mail del dueño:");
             email = sc.next();
         }
         Dueno dueno = Dueno.verificarEmail(email);
-        Mascota masc = new Mascota(nombre, raza, nacimiento, tipo, dueno);
+        Mascota masc = new Mascota(Util.nextID("mascotas.txt"), nombre, raza, nacimiento, tipo, dueno);
         masc.saveFile("mascotas.txt");
     }
     
     public static ArrayList<Mascota> readFromFile(String nomfile){
         ArrayList<Mascota> mascotas = new ArrayList<>();
-        String email = null;
         try(Scanner sc = new Scanner(new File(nomfile))){
             while(sc.hasNextLine()){
                 String linea = sc.nextLine();
                 String[] arreglo = linea.split("\\|");
                 String[] fecha = arreglo[3].split("-");
                 LocalDate nacimiento = LocalDate.of(Integer.parseInt(fecha[0]),Integer.parseInt(fecha[1]),Integer.parseInt(fecha[2]));
-                Mascota mascota = new Mascota(arreglo[1], arreglo[2], nacimiento, arreglo[4], Dueno.verificarEmail(arreglo[6]));
+                Mascota mascota = new Mascota(Integer.parseInt(arreglo[0]), arreglo[1], arreglo[2], nacimiento, arreglo[4], Dueno.verificarEmail(arreglo[6]));
                 mascotas.add(mascota);
             }
         }
@@ -204,6 +205,15 @@ public class Mascota {
         ArrayList<Mascota> mascotas = readFromFile("mascotas.txt");
         for(Mascota mascota: mascotas){
             if(Objects.equals(mascota.nombre, nombreMascota))
+                return mascota;
+        }
+        return null;
+    }
+    
+    public static Mascota verificarID(int id){
+        ArrayList<Mascota> mascotas = readFromFile("mascotas.txt");
+        for(Mascota mascota: mascotas){
+            if(mascota.id == id)
                 return mascota;
         }
         return null;

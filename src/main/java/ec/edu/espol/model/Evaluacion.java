@@ -5,6 +5,7 @@
  */
 package ec.edu.espol.model;
 
+import static ec.edu.espol.model.Dueno.readFromFile;
 import ec.edu.espol.util.Util;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -27,8 +28,8 @@ public class Evaluacion {
     private int idCriterio;
     private Criterio criterio;
     
-    public Evaluacion(MiembroJurado jurado, Inscripcion inscripcion, Criterio criterio, double nota){
-        this.id = Util.nextID("evaluaciones.txt");
+    public Evaluacion(int id, MiembroJurado jurado, Inscripcion inscripcion, Criterio criterio, double nota){
+        this.id = id;
         this.idInscripcion = inscripcion.getId();
         this.inscripcion = inscripcion;
         this.idMiembroJurado = jurado.getId();
@@ -40,7 +41,8 @@ public class Evaluacion {
     //setters
 
     public void setId(int id) {
-        this.id = id;
+        if(verificarID(id) == null)
+            this.id = id;
     }
 
     public void setIdInscripcion(int idInscripcion) {
@@ -60,7 +62,8 @@ public class Evaluacion {
     }
 
     public void setNota(double nota) {
-        this.nota = nota;
+        if(nota >= 0)
+            this.nota = nota;
     }
 
     public void setIdCriterio(int idCriterio) {
@@ -125,14 +128,12 @@ public class Evaluacion {
         if(this.getClass()!=obj.getClass())
             return false;
         Evaluacion evaluacion = (Evaluacion)obj;
-        if(evaluacion.nota != this.nota)
-            return false;
         return (((evaluacion.idInscripcion == this.idInscripcion)&&(evaluacion.idMiembroJurado == this.idMiembroJurado))&&(evaluacion.idCriterio == this.idCriterio));
     }
     
     public void saveFile(String nomfile){
         try(PrintWriter pw = new PrintWriter(new FileOutputStream(new File(nomfile), true))){
-            pw.println(this.id + "|" + this.idInscripcion + "|" + this.idMiembroJurado + "|" + this.idCriterio + "|" + this.nota);
+            pw.println(this.id + "|" + this.inscripcion.getId() + "|" + this.miembroJurado.getId() + "|" + this.criterio.getId() + "|" + this.nota);
         }
         catch(Exception e){
             System.out.println(e.getMessage());
@@ -164,10 +165,10 @@ public class Evaluacion {
         System.out.println("-> Ingrese nota de evaluacion:");
         double nota = sc.nextDouble();
         while(nota<0){
-            System.out.println("-> Ingrese nota de evaluacion:");
+            System.out.println("-> Ingrese correctamente la nota de evaluacion:");
             nota = sc.nextDouble();
         }
-        Evaluacion evaluacion = new Evaluacion(jurado, inscripcion, criterio, nota);
+        Evaluacion evaluacion = new Evaluacion(Util.nextID("evaluaciones.txt"), jurado, inscripcion, criterio, nota);
         evaluacion.saveFile("evaluaciones.txt");
     }
     
@@ -177,7 +178,7 @@ public class Evaluacion {
             while(sc.hasNextLine()){
                 String linea = sc.nextLine();
                 String[] arreglo = linea.split("\\|");
-                Evaluacion evaluacion = new Evaluacion(MiembroJurado.verificarID(Integer.parseInt(arreglo[2])),Inscripcion.verificarID(Integer.parseInt(arreglo[1])),Criterio.verificarID(Integer.parseInt(arreglo[3])),Double.parseDouble(arreglo[4]));
+                Evaluacion evaluacion = new Evaluacion(Integer.parseInt(arreglo[0]), MiembroJurado.verificarID(Integer.parseInt(arreglo[2])),Inscripcion.verificarID(Integer.parseInt(arreglo[1])),Criterio.verificarID(Integer.parseInt(arreglo[3])),Double.parseDouble(arreglo[4]));
                 evaluaciones.add(evaluacion);
             }
         }
@@ -186,5 +187,14 @@ public class Evaluacion {
         }
         return evaluaciones;
         }
+    
+    public static Evaluacion verificarID(int id){
+        ArrayList<Evaluacion> evaluaciones = readFromFile("evaluaciones.txt");
+        for(Evaluacion evaluacion: evaluaciones){
+            if(evaluacion.id == id)
+                return evaluacion;
+        }
+        return null;
+    }
 }
 

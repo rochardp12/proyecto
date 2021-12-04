@@ -27,8 +27,8 @@ public class Dueno {
     private ArrayList<Mascota> mascotas;
     //constructor
     
-    public Dueno(String nombres, String apellidos, String direccion, String telefono, String email){
-        this.id = Util.nextID("dueños.txt");
+    public Dueno(int id, String nombres, String apellidos, String direccion, String telefono, String email){
+        this.id = id;
         this.nombres = nombres;
         this.apellidos = apellidos;
         this.direccion = direccion;
@@ -39,7 +39,8 @@ public class Dueno {
     //setters
 
     public void setId(int id) {
-        this.id = id;
+        if(verificarID(id) == null)
+            this.id = id;
     }
 
     public void setNombres(String nombres) {
@@ -59,7 +60,8 @@ public class Dueno {
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        if(verificarEmail(email) == null)
+            this.email = email;
     }
 
     public void setMascotas(ArrayList<Mascota> mascotas) {
@@ -94,7 +96,7 @@ public class Dueno {
     public ArrayList<Mascota> getMascotas() {
         return this.mascotas;
     }
-    //comportamientos ñ
+    //comportamientos 
     
     @Override
     public String toString() {
@@ -140,7 +142,11 @@ public class Dueno {
         String telefono = sc.next();
         System.out.println("-> Ingrese e-mail:");
         String email = sc.next();
-        Dueno dueno = new Dueno(nombres, apellidos, direccion, telefono, email);
+        while(!(verificarEmail(email) == null)){
+            System.out.println("-> Ingrese e-mail:");
+            email = sc.next();
+        }
+        Dueno dueno = new Dueno(Util.nextID("dueños.txt"),nombres, apellidos, direccion, telefono, email);
         dueno.saveFile("dueños.txt");
     }
     
@@ -150,7 +156,7 @@ public class Dueno {
             while(sc.hasNextLine()){
                 String linea = sc.nextLine();
                 String[] arreglo = linea.split("\\|");
-                Dueno dueno = new Dueno(arreglo[1], arreglo[2], arreglo[3], arreglo[4], arreglo[5]);
+                Dueno dueno = new Dueno(Integer.parseInt(arreglo[0]), arreglo[1], arreglo[2], arreglo[3], arreglo[4], arreglo[5]);
                 duenos.add(dueno);
             }
         }
@@ -164,6 +170,15 @@ public class Dueno {
         ArrayList<Dueno> duenos = readFromFile("dueños.txt");
         for(Dueno dueno: duenos){
             if(Objects.equals(dueno.email,email))
+                return dueno;
+        }
+        return null;
+    }
+    
+    public static Dueno verificarID(int id){
+        ArrayList<Dueno> duenos = readFromFile("dueños.txt");
+        for(Dueno dueno: duenos){
+            if(dueno.id == id)
                 return dueno;
         }
         return null;

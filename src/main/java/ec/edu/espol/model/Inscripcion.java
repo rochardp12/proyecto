@@ -29,8 +29,8 @@ public class Inscripcion {
     private ArrayList<Evaluacion> evaluaciones;
     //constructor
     
-    public Inscripcion(Mascota mascota, Concurso concurso, double valor, LocalDate fechaInscripcion){
-        this.id = Util.nextID("inscripciones.txt");
+    public Inscripcion(int id, Mascota mascota, Concurso concurso, double valor, LocalDate fechaInscripcion){
+        this.id = id;
         this.idMascota = mascota.getId();
         this.mascota = mascota;
         this.idConcurso = concurso.getId();
@@ -42,7 +42,8 @@ public class Inscripcion {
     //setters
 
     public void setId(int id) {
-        this.id = id;
+        if(verificarID(id) == null)
+            this.id = id;
     }
 
     public void setIdMascota(int idMascota) {
@@ -62,7 +63,8 @@ public class Inscripcion {
     }
 
     public void setValor(double valor) {
-        this.valor = valor;
+        if(valor >= 0)
+            this.valor = valor;
     }
 
     public void setFechaInscripcion(LocalDate fechaInscripcion) {
@@ -126,12 +128,12 @@ public class Inscripcion {
         if(this.getClass()!=obj.getClass())
             return false;
         Inscripcion ins = (Inscripcion)obj;
-        return ((this.idMascota == ins.idMascota)&&(this.idConcurso == ins.idMascota));
+        return ((this.idMascota == ins.idMascota)&&(this.idConcurso == ins.idConcurso));
     }
     
     public void saveFile(String nomfile){
         try(PrintWriter pw = new PrintWriter(new FileOutputStream(new File(nomfile), true))){
-            pw.println(this.id + "|" + this.idMascota + "|" + this.mascota.getNombre() + "|" + this.idConcurso + "|" + this.concurso.getNombre() + "|" + this.valor + "|" + this.fechaInscripcion + "|" + this.evaluaciones);
+            pw.println(this.id + "|" + this.mascota.getId() + "|" + this.mascota.getNombre() + "|" + this.concurso.getId() + "|" + this.concurso.getNombre() + "|" + this.valor + "|" + this.fechaInscripcion + "|" + this.evaluaciones);
         }
         catch(Exception e){
             System.out.println(e.getMessage());
@@ -142,14 +144,14 @@ public class Inscripcion {
         System.out.println("-> Ingrese nombre de la mascota:");
         String nombreMascota = sc.next();
         while(Mascota.verificarNombre(nombreMascota) == null){
-            System.out.println("-> Ingrese nombre de la mascota:");
+            System.out.println("-> Ingrese correctamente el nombre de la mascota:");
             nombreMascota = sc.next();
         }
         Mascota mascota = Mascota.verificarNombre(nombreMascota);
         System.out.println("-> Ingrese nombre del concurso:");
         String nombreConcurso = sc.next();
         while(Concurso.verificarNombre(nombreConcurso) == null){
-            System.out.println("-> Ingrese nombre del concurso:");
+            System.out.println("-> Ingrese correctamente el nombre del concurso:");
             nombreConcurso = sc.next();
         }
         Concurso concurso = Concurso.verificarNombre(nombreConcurso);
@@ -162,23 +164,23 @@ public class Inscripcion {
         System.out.println("-> Ingrese dia de inscripcion (dd):");
         int dia = sc.nextInt();
         while((dia<=0)||(dia>31)){
-            System.out.println("-> Ingrese dia de inscripcion (dd):");
+            System.out.println("-> Ingrese correctamente el dia de inscripcion (dd):");
             dia = sc.nextInt();
         }
         System.out.println("-> Ingrese mes de inscripcion en numeros (mm):");
         int mes = sc.nextInt();
         while((dia >= 30)&&((mes == 2)||(mes == 02))){
-            System.out.println("-> Ingrese mes de inscripcion en numeros(mm) :");
+            System.out.println("-> Ingrese correctamente el mes de inscripcion en numeros(mm) :");
             mes = sc.nextInt();
         }
         System.out.println("-> Ingrese año de inscripcion (yyyy) :");
         int an = sc.nextInt();
         while(an < 2021){
-            System.out.println("-> Ingrese año de inscripcion (yyyy) :");
+            System.out.println("-> Ingrese correctamente el año de inscripcion (yyyy) :");
             an = sc.nextInt();
         }
         LocalDate fechaInscripcion = LocalDate.of(an,mes,dia);
-        Inscripcion inscripcion = new Inscripcion(mascota, concurso, valor, fechaInscripcion);
+        Inscripcion inscripcion = new Inscripcion(Util.nextID("inscripciones.txt"), mascota, concurso, valor, fechaInscripcion);
         inscripcion.saveFile("inscripciones.txt");
     }
     
@@ -190,7 +192,7 @@ public class Inscripcion {
                 String[] arreglo = linea.split("\\|");
                 String[] fecha = arreglo[6].split("-");
                 LocalDate fechaInscripcion = LocalDate.of(Integer.parseInt(fecha[0]),Integer.parseInt(fecha[1]),Integer.parseInt(fecha[2]));
-                Inscripcion inscripcion = new Inscripcion(Mascota.verificarNombre(arreglo[2]), Concurso.verificarNombre(arreglo[4]), Double.parseDouble(arreglo[5]), fechaInscripcion);
+                Inscripcion inscripcion = new Inscripcion(Integer.parseInt(arreglo[0]), Mascota.verificarNombre(arreglo[2]), Concurso.verificarNombre(arreglo[4]), Double.parseDouble(arreglo[5]), fechaInscripcion);
                 inscripciones.add(inscripcion);
             }
         }

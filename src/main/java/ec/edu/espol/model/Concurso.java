@@ -5,12 +5,12 @@
  */
 package ec.edu.espol.model;
 
+import static ec.edu.espol.model.Dueno.readFromFile;
 import ec.edu.espol.util.Util;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
 import java.time.LocalDate;
-import java.time.Month;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Scanner;
@@ -32,8 +32,8 @@ public class Concurso {
     private ArrayList<Criterio> criterios;
     //constructor
     
-    public Concurso(String nombre, LocalDate fecha, LocalDate fechaInscripcion, LocalDate fechaCierreInscripcion, String tematica, double costoInscripcion){
-        this.id = Util.nextID("concursos.txt");
+    public Concurso(int id, String nombre, LocalDate fecha, LocalDate fechaInscripcion, LocalDate fechaCierreInscripcion, String tematica, double costoInscripcion){
+        this.id = id;
         this.nombre = nombre;
         this.fecha = fecha;
         this.fechaInscripcion = fechaInscripcion;
@@ -47,7 +47,8 @@ public class Concurso {
     //setters
 
     public void setId(int id) {
-        this.id = id;
+        if(verificarID(id) == null)
+            this.id = id;
     }
 
     public void setNombre(String nombre) {
@@ -149,6 +150,8 @@ public class Concurso {
         if(this.getClass()!=obj.getClass())
             return false;
         Concurso concurso = (Concurso)obj;
+        if(!(Objects.equals(this.nombre, concurso.nombre)))
+            return false;
         return Objects.equals(this.tematica,concurso.tematica);
     }
     
@@ -167,37 +170,37 @@ public class Concurso {
         System.out.println("-> Ingrese dia de inicio del concurso (dd):");
         int dia = sc.nextInt();
         while((dia<=0)||(dia>31)){
-            System.out.println("-> Ingrese dia de inicio del concurso (dd):");
+            System.out.println("-> Ingrese correctamente el dia de inicio del concurso (dd):");
             dia = sc.nextInt();
         }
         System.out.println("-> Ingrese mes de inicio del concurso en numeros (mm):");
         int mes = sc.nextInt();
         while((dia >= 30)&&((mes == 2)||(mes == 02))){
-            System.out.println("-> Ingrese mes de inicio del concurso en numeros(mm) :");
+            System.out.println("-> Ingrese correctamente el mes de inicio del concurso en numeros(mm) :");
             mes = sc.nextInt();
         }
         System.out.println("-> Ingrese año de inicio del concurso (yyyy) :");
         int an = sc.nextInt();
         while(an < 2021){
-            System.out.println("-> Ingrese año de inicio del concurso (yyyy) :");
+            System.out.println("-> Ingrese correctamente el año de inicio del concurso (yyyy) :");
             an = sc.nextInt();
         }
         LocalDate fecha = LocalDate.of(an,mes,dia);
         System.out.println("-> Ingrese dia de inicio de inscripcion al concurso (dd):");
         int diaIns = sc.nextInt();
         while((diaIns<=0)||(diaIns>31)){
-            System.out.println("-> Ingrese dia de inicio de inscripcion al concurso (dd):");
+            System.out.println("-> Ingrese correctamente el dia de inicio de inscripcion al concurso (dd):");
             diaIns = sc.nextInt();
         }
         System.out.println("-> Ingrese mes de inicio de inscripcion al concurso en numeros (mm):");
         int mesIns = sc.nextInt();
         while((diaIns >= 30)&&((mesIns == 2)||(mesIns == 02))){
-            System.out.println("-> Ingrese mes de inicio de inscripcion al concurso en numeros(mm) :");
-            mes = sc.nextInt();
+            System.out.println("-> Ingrese correctamente el mes de inicio de inscripcion al concurso en numeros(mm) :");
+            mesIns = sc.nextInt();
         }
         System.out.println("-> Ingrese año de inicio de inscripcion al concurso (yyyy) :");
         int anIns = sc.nextInt();
-        while(an < 2021){
+        while(anIns < 2021){
             System.out.println("-> Ingrese año de inicio de inscripcion al concurso (yyyy) :");
             anIns = sc.nextInt();
         }
@@ -205,19 +208,19 @@ public class Concurso {
         System.out.println("-> Ingrese dia de cierre de inscripcion al concurso (dd):");
         int diaCie = sc.nextInt();
         while((diaCie<=0)||(diaCie>31)){
-            System.out.println("-> Ingrese dia de cierre de inscripcion al concurso (dd):");
+            System.out.println("-> Ingrese correctamente el dia de cierre de inscripcion al concurso (dd):");
             diaCie = sc.nextInt();
         }
         System.out.println("-> Ingrese mes de cierre de inscripcion al concurso en numeros (mm):");
         int mesCie = sc.nextInt();
         while((diaCie >= 30)&&((mesCie == 2)||(mesCie == 02))){
-            System.out.println("-> Ingrese mes de cierre de inscripcion al concurso en numeros(mm) :");
+            System.out.println("-> Ingrese correctamente el mes de cierre de inscripcion al concurso en numeros(mm) :");
             mesCie = sc.nextInt();
         }
         System.out.println("-> Ingrese año de cierre de inscripcion al concurso (yyyy) :");
         int anCie = sc.nextInt();
         while(anCie < 2021){
-            System.out.println("-> Ingrese año de cierre de inscripcion al concurso (yyyy) :");
+            System.out.println("-> Ingrese correctamente el año de cierre de inscripcion al concurso (yyyy) :");
             anCie = sc.nextInt();
         }
         LocalDate fechaCie = LocalDate.of(anCie,mesCie,diaCie);
@@ -229,7 +232,7 @@ public class Concurso {
             System.out.println("Ingrese costo de inscripcion:");
             costo = sc.nextDouble();
         }
-        Concurso concurso = new Concurso(nombreConcurso, fecha, fechaIns, fechaCie, tematica, costo);
+        Concurso concurso = new Concurso(Util.nextID("concursos.txt"), nombreConcurso, fecha, fechaIns, fechaCie, tematica, costo);
         concurso.saveFile("concursos.txt");
     }
     
@@ -245,7 +248,7 @@ public class Concurso {
                 LocalDate fecha2 = LocalDate.of(Integer.parseInt(fechIns[0]),Integer.parseInt(fechIns[1]),Integer.parseInt(fechIns[2]));
                 String[] fechCie = arreglo[5].split("-");
                 LocalDate fecha3 = LocalDate.of(Integer.parseInt(fechCie[0]),Integer.parseInt(fechCie[1]),Integer.parseInt(fechCie[2]));
-                Concurso concurso = new Concurso(arreglo[1], fecha1, fecha2, fecha3, arreglo[3], Double.parseDouble(arreglo[6]));
+                Concurso concurso = new Concurso(Integer.parseInt(arreglo[0]), arreglo[1], fecha1, fecha2, fecha3, arreglo[3], Double.parseDouble(arreglo[6]));
                 concursos.add(concurso);
             }
         }
@@ -259,6 +262,15 @@ public class Concurso {
         ArrayList<Concurso> concursos = readFromFile("concursos.txt");
         for(Concurso concurso: concursos){
             if(Objects.equals(concurso.nombre,nombreConcurso))
+                return concurso;
+        }
+        return null;
+    }
+    
+    public static Concurso verificarID(int id){
+        ArrayList<Concurso> concursos = readFromFile("concursos.txt");
+        for(Concurso concurso: concursos){
+            if(concurso.id == id)
                 return concurso;
         }
         return null;

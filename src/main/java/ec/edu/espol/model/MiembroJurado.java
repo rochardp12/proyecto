@@ -27,8 +27,8 @@ public class MiembroJurado {
     private ArrayList<Evaluacion> evaluaciones;
     //constructor
     
-    public MiembroJurado(String nombres, String apellidos, String telefono, String email, String perfilProfesional){
-        this.id = Util.nextID("miembroJurados.txt");
+    public MiembroJurado(int id, String nombres, String apellidos, String telefono, String email, String perfilProfesional){
+        this.id = id;
         this.nombres = nombres;
         this.apellidos = apellidos;
         this.telefono = telefono;
@@ -39,7 +39,8 @@ public class MiembroJurado {
     //setters
 
     public void setId(int id) {
-        this.id = id;
+        if(verificarID(id) == null)
+            this.id = id;
     }
 
     public void setNombres(String nombres) {
@@ -128,7 +129,7 @@ public class MiembroJurado {
         String email = sc.next();
         System.out.println("-> Ingrese breve descripcion del perfil profesional:");
         String perfilProfesional = sc.next();
-        MiembroJurado jurado = new MiembroJurado(nombres, apellidos, telefono, email, perfilProfesional);
+        MiembroJurado jurado = new MiembroJurado(Util.nextID("miembroJurados.txt"), nombres, apellidos, telefono, email, perfilProfesional);
         jurado.saveFile("miembroJurados.txt");
     }
     
@@ -138,7 +139,7 @@ public class MiembroJurado {
             while(sc.hasNextLine()){
                 String linea = sc.nextLine();
                 String[] arreglo = linea.split("\\|");
-                MiembroJurado jurado = new MiembroJurado(arreglo[1], arreglo[2], arreglo[3], arreglo[4], arreglo[5]);
+                MiembroJurado jurado = new MiembroJurado(Integer.parseInt(arreglo[0]), arreglo[1], arreglo[2], arreglo[3], arreglo[4], arreglo[5]);
                 jurados.add(jurado);
             }
         }

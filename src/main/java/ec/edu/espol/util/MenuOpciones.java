@@ -34,6 +34,10 @@ public class MenuOpciones {
             System.out.println("");
             System.out.println("-> Ingrese opcion:");
             num = sc.nextInt();
+            while((num<1)||(num>9)){
+                System.out.println("-> Ingrese correctamente una opcion:");
+                num = sc.nextInt();
+            }
             switch(num){
                 case 1: Dueno.nextDueno(sc);
                     break;
