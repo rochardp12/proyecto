@@ -5,6 +5,7 @@
  */
 package ec.edu.espol.util;
 
+import ec.edu.espol.model.Concurso;
 import ec.edu.espol.model.Criterio;
 import ec.edu.espol.model.Dueno;
 import ec.edu.espol.model.Evaluacion;
@@ -44,6 +45,8 @@ public class MenuOpciones {
                 case 1: Dueno.nextDueno(sc);
                     break;
                 case 2: Mascota.nextMascota(sc);
+                    break;
+                case 3: Concurso.nextConcurso(sc);
                     break;
                 case 4: Premio.nextPremio(sc);
                     break;
