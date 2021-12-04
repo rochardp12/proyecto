@@ -147,4 +147,13 @@ public class MiembroJurado {
         }
         return jurados;
         }
+    
+    public static MiembroJurado verificarEmail(String email){
+        ArrayList<MiembroJurado> jurados = readFromFile("miembroJurado.txt");
+        for(MiembroJurado jurado: jurados){
+            if(Objects.equals(jurado.email,email))
+                return jurado;
+        }
+        return null;
+    }
 }

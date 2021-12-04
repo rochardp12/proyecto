@@ -5,6 +5,7 @@
  */
 package ec.edu.espol.model;
 
+import static ec.edu.espol.model.Inscripcion.readFromFile;
 import ec.edu.espol.util.Util;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -147,4 +148,13 @@ public class Criterio {
         }
         return criterios;
         }
+    
+    public static Criterio verificarID(int id){
+        ArrayList<Criterio> criterios = readFromFile("criterios.txt");
+        for(Criterio criterio: criterios){
+            if(criterio.id == id)
+                return criterio;
+        }
+        return null;
+    }
     }

@@ -27,32 +27,17 @@ public class Evaluacion {
     private int idCriterio;
     private Criterio criterio;
     
-    public Evaluacion(String email, int idInscripcion, int idCriterio, double nota){
+    public Evaluacion(MiembroJurado jurado, Inscripcion inscripcion, Criterio criterio, double nota){
         this.id = Util.nextID("evaluaciones.txt");
-        this.idInscripcion = idInscripcion;
-        ArrayList<Inscripcion> inscripciones = Inscripcion.readFromFile("inscripciones.txt");
-        for(Inscripcion inscripcion: inscripciones){
-            if(inscripcion.getId() == idInscripcion)
-                this.inscripcion = inscripcion;
-        }
-        ArrayList<MiembroJurado> jurados = MiembroJurado.readFromFile("miembroJurados.txt");
-        for(MiembroJurado jurado: jurados){
-            if(Objects.equals(jurado.getEmail(),email)){
-                this.idMiembroJurado = jurado.getId();
-                this.miembroJurado = jurado;
-            }
-        }
+        this.idInscripcion = inscripcion.getId();
+        this.inscripcion = inscripcion;
+        this.idMiembroJurado = jurado.getId();
+        this.miembroJurado = jurado;
         this.nota = nota;
-        this.idCriterio = idCriterio;
-        ArrayList<Criterio> criterios = Criterio.readFromFile("criterios.txt");
-        for(Criterio criterio: criterios){
-            if(criterio.getId() == idCriterio)
-                this.criterio = criterio;
+        this.idCriterio = criterio.getId();
+        this.criterio = criterio;
         }
-        //setters
-        
-        
-    }
+    //setters
 
     public void setId(int id) {
         this.id = id;
@@ -118,6 +103,8 @@ public class Evaluacion {
     public Criterio getCriterio() {
         return criterio;
     }
+    
+    
     //comportamientos
     
     @Override
@@ -131,17 +118,17 @@ public class Evaluacion {
         return sb.toString();
     }
     
-    @Override
-    public boolean equals(Object obj) {
-        if(obj==null)
-            return false;
-        if(this==obj)
-            return true;
-        if(this.getClass()!=obj.getClass())
-            return false;
-        Dueno dueno = (Dueno)obj;
-        return Objects.equals(this.email,dueno.email);
-    }
+//    @Override
+//    public boolean equals(Object obj) {
+//        if(obj==null)
+//            return false;
+//        if(this==obj)
+//            return true;
+//        if(this.getClass()!=obj.getClass())
+//            return false;
+//        Dueno dueno = (Dueno)obj;
+//        return Objects.equals(this.email,dueno.email);
+//    }
     
     public void saveFile(String nomfile){
         try(PrintWriter pw = new PrintWriter(new FileOutputStream(new File(nomfile), true))){
@@ -152,35 +139,34 @@ public class Evaluacion {
         }
     }
     
-    public static void nextDueno(Scanner sc){
-        System.out.println("-> Ingrese nombres:");
-        String nombres = sc.next();
-        System.out.println("-> Ingrese apellidos:");
-        String apellidos = sc.next();
-        System.out.println("-> Ingrese direccion de vivienda:");
-        String direccion = sc.next();
-        System.out.println("-> Ingrese telefono de contacto:");
-        String telefono = sc.next();
-        System.out.println("-> Ingrese e-mail:");
+    public static void nextEvaluacion(Scanner sc){
+        System.out.println("-> Ingrese e-mail del jurado:");
         String email = sc.next();
-        Dueno dueno = new Dueno(nombres, apellidos, direccion, telefono, email);
-        dueno.saveFile("dueños.txt");
+        while(MiembroJurado.verificarEmail(email) == null){
+            System.out.println("-> Ingrese correctamente el e-mail del jurado:");
+            email = sc.next();    
+        }
+        MiembroJurado jurado = MiembroJurado.verificarEmail(email);
+        System.out.println("-> Ingrese ID de inscripcion:");
+        int idIns = sc.nextInt();
+        while(Inscripcion.verificarID(idIns) == null){
+            System.out.println("-> Ingrese correctamente el ID de inscripcion:");
+            idIns = sc.nextInt(); 
+        }
+        Inscripcion inscripcion = Inscripcion.verificarID(idIns);
+        System.out.println("-> Ingrese ID del criterio:");
+        int idCri = sc.nextInt();
+        while(Criterio.verificarID(idCri) == null){
+            System.out.println("-> Ingrese correctamente el ID del criterio:");
+            idCri = sc.nextInt();
+        }
+        Criterio criterio = Criterio.verificarID(idCri);
+        System.out.println("-> Ingrese nota de evaluacion:");
+        double nota = sc.nextDouble();
+        Evaluacion evaluacion = new Evaluacion(jurado, inscripcion, criterio, nota);
+        evaluacion.saveFile("dueños.txt");
     }
     
-    public static ArrayList<Dueno> readFromFile(String nomfile){
-        ArrayList<Dueno> duenos = new ArrayList<>();
-        try(Scanner sc = new Scanner(new File(nomfile))){
-            while(sc.hasNextLine()){
-                String linea = sc.nextLine();
-                String[] arreglo = linea.split("\\|");
-                Dueno dueno = new Dueno(arreglo[1], arreglo[2], arreglo[3], arreglo[4], arreglo[5]);
-                duenos.add(dueno);
-            }
-        }
-        catch(Exception e){
-            System.out.println(e.getMessage());
-        }
-        return duenos;
-        }
+
 }
-}
+

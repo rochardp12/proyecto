@@ -194,5 +194,16 @@ public class Inscripcion {
             System.out.println(e.getMessage());
         }
         return inscripciones;
+    }
+    
+    public static Inscripcion verificarID(int id){
+        ArrayList<Inscripcion> inscripciones = readFromFile("inscripciones.txt");
+        for(Inscripcion inscripcion: inscripciones){
+            if(inscripcion.id == id)
+                return inscripcion;
         }
+        return null;
+    }
+    
+
 }
